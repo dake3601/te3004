@@ -9,22 +9,39 @@ import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Remove from '@mui/icons-material/Remove';
 import Add from '@mui/icons-material/Add';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { API_WS_URL } from '../utils/config';
 
 const Controls = () => {
   const [speed, setSpeed] = useState(0)
   const [direction, setDirection] = useState('Stop')
 
+  const { sendMessage, readyState } = useWebSocket(`${API_WS_URL}/api/commands`);
+
   const handleDirectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDirection((event.target as HTMLInputElement).value)
+    const newDirection = (event.target as HTMLInputElement).value;
+    setDirection(newDirection)
+    sendMessage(JSON.stringify({ speed, direction: newDirection }))
   }
 
   const handleSpeedChange = (event: Event) => {
-    setSpeed(Number((event.target as HTMLInputElement).value))
+    const newSpeed = Number((event.target as HTMLInputElement).value);
+    setSpeed(newSpeed)
+    sendMessage(JSON.stringify({ speed: newSpeed, direction }))
   }
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
 
   return (
     <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
       <h2>Controls</h2>
+      <p>The websocket is currently: {connectionStatus}</p>
       <FormControl>
         <FormLabel id="motor-direction">Motor Direction</FormLabel>
         <RadioGroup
@@ -50,7 +67,6 @@ const Controls = () => {
               defaultValue={0}
               valueLabelDisplay="auto"
               step={5}
-              marks
               min={0}
               max={255}
               value={speed}

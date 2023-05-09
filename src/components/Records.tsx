@@ -1,5 +1,7 @@
 import Stack from '@mui/material/Stack';
 import { useState, useEffect } from 'react'
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { API_URL, API_WS_URL } from '../utils/config';
 
 interface Record {
   id: string
@@ -15,8 +17,17 @@ interface Record {
 const Records = () => {
   const [records, setRecords] = useState<Record[]>([])
 
+  const { lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/updates`);
+
   useEffect(() => {
-    fetch("https://te3004-api.onrender.com/api/records").then(
+    if (lastMessage !== null) {
+      const record = JSON.parse(lastMessage.data) as Record
+      setRecords(prevRecords => [...prevRecords, record])
+    }
+  }, [lastMessage]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/records`).then(
       res => res.json().then(data => data as Record[])
     ).then(
       data => setRecords(data)
@@ -25,9 +36,18 @@ const Records = () => {
     )
   }, []);
 
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
+
   return (
     <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
       <h2>Records</h2>
+      <p>The websocket is currently: {connectionStatus}</p>
       <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
         <p>Timestamp</p>
         <p>Set speed</p>
