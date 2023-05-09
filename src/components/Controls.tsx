@@ -9,6 +9,7 @@ import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Remove from '@mui/icons-material/Remove';
 import Add from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { API_WS_URL } from '../utils/config';
 
@@ -28,6 +29,15 @@ const Controls = () => {
     const newSpeed = Number((event.target as HTMLInputElement).value);
     setSpeed(newSpeed)
     sendMessage(JSON.stringify({ speed: newSpeed, direction }))
+  }
+
+  const handleSpeedClick = (change: number) => {
+    return () => {
+      const newSpeed = Math.min(Math.max(speed + change, 0), 255);
+      if (newSpeed === speed) return;
+      setSpeed(newSpeed)
+      sendMessage(JSON.stringify({ speed: newSpeed, direction }))
+    }
   }
 
   const connectionStatus = {
@@ -61,7 +71,9 @@ const Controls = () => {
         <FormLabel id="motor-speed">Motor Speed</FormLabel>
         <Box sx={{ width: 300 }}>
           <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-            <Remove />
+            <IconButton onClick={handleSpeedClick(-5)}>
+              <Remove />
+            </IconButton>
             <Slider
               aria-label="Speed"
               defaultValue={0}
@@ -72,7 +84,9 @@ const Controls = () => {
               value={speed}
               onChange={handleSpeedChange}
             />
-            <Add />
+            <IconButton onClick={handleSpeedClick(5)}>
+              <Add />
+            </IconButton>
             <p>{speed}</p>
           </Stack>
         </Box>
