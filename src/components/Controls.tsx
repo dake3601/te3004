@@ -25,10 +25,15 @@ const Controls = () => {
     sendMessage(JSON.stringify({ speed, direction: newDirection }))
   }
 
-  const handleSpeedChange = (event: Event) => {
-    const newSpeed = Number((event.target as HTMLInputElement).value);
-    setSpeed(newSpeed)
-    sendMessage(JSON.stringify({ speed: newSpeed, direction }))
+  const handleSpeedChange = (_event: React.SyntheticEvent | Event, value: number | number[]) => {
+    if (typeof value !== 'number') return;
+    setSpeed(value)
+  }
+
+  const handleCommitedSpeedChange = (_event: React.SyntheticEvent | Event, value: number | number[]) => {
+    if (typeof value !== 'number') return;
+    setSpeed(value)
+    sendMessage(JSON.stringify({ speed: value, direction }))
   }
 
   const handleSpeedClick = (change: number) => {
@@ -83,6 +88,7 @@ const Controls = () => {
               max={255}
               value={speed}
               onChange={handleSpeedChange}
+              onChangeCommitted={handleCommitedSpeedChange}
             />
             <IconButton onClick={handleSpeedClick(5)}>
               <Add />
