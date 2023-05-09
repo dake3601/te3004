@@ -17,14 +17,21 @@ interface Record {
 const Records = () => {
   const [records, setRecords] = useState<Record[]>([])
 
-  const { lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/updates`);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/updates`);
 
   useEffect(() => {
-    if (lastMessage !== null) {
-      const record = JSON.parse(lastMessage.data) as Record
-      setRecords(prevRecords => [...prevRecords, record])
+    if (lastMessage !== null && lastMessage.data !== null) {
+      if (lastMessage.data === 'pong') {
+        return;
+      } else if (lastMessage.data === 'ping') {
+        sendMessage('pong');
+        return;
+      } else {
+        const record = JSON.parse(lastMessage.data) as Record
+        setRecords(prevRecords => [...prevRecords, record])
+      }
     }
-  }, [lastMessage]);
+  }, [lastMessage, sendMessage]);
 
   useEffect(() => {
     fetch(`${API_URL}/api/records`).then(

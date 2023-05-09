@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -17,7 +17,18 @@ const Controls = () => {
   const [speed, setSpeed] = useState(0)
   const [direction, setDirection] = useState('Stop')
 
-  const { sendMessage, readyState } = useWebSocket(`${API_WS_URL}/api/commands`);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/commands`);
+
+  useEffect(() => {
+    if (lastMessage !== null && lastMessage.data !== null) {
+      if (lastMessage.data === 'pong') {
+        return;
+      } else if (lastMessage.data === 'ping') {
+        sendMessage('pong');
+        return;
+      }
+    }
+  }, [lastMessage, sendMessage]);
 
   const handleDirectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newDirection = (event.target as HTMLInputElement).value;
