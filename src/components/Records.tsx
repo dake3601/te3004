@@ -17,7 +17,12 @@ interface Record {
 const Records = () => {
   const [records, setRecords] = useState<Record[]>([])
 
-  const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/updates`);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/updates`, {
+    shouldReconnect: () => true,
+    retryOnError: true,
+    reconnectAttempts: 100000,
+    reconnectInterval: 100,
+  });
 
   useEffect(() => {
     if (lastMessage !== null && lastMessage.data !== null) {
