@@ -17,7 +17,12 @@ const Controls = () => {
   const [speed, setSpeed] = useState(0)
   const [direction, setDirection] = useState('Stop')
 
-  const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/commands`);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/commands`, {
+    shouldReconnect: () => true,
+    retryOnError: true,
+    reconnectAttempts: 100000,
+    reconnectInterval: 100,
+  });
 
   useEffect(() => {
     if (lastMessage !== null && lastMessage.data !== null) {
