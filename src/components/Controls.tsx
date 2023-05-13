@@ -10,8 +10,11 @@ import Stack from '@mui/material/Stack';
 import Remove from '@mui/icons-material/Remove';
 import Add from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import Typography from '@mui/material/Typography';
+import useWebSocket from 'react-use-websocket';
 import { API_WS_URL } from '../utils/config';
+import { connectionStatus, connectionStatusColor } from '../utils/connectionStatus';
+import CircleIcon from '@mui/icons-material/Circle';
 
 const Controls = () => {
   const [speed, setSpeed] = useState(0)
@@ -61,18 +64,13 @@ const Controls = () => {
     }
   }
 
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: 'Connecting',
-    [ReadyState.OPEN]: 'Open',
-    [ReadyState.CLOSING]: 'Closing',
-    [ReadyState.CLOSED]: 'Closed',
-    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  }[readyState];
-
   return (
     <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
-      <h2>Controls</h2>
-      <p>The websocket is currently: {connectionStatus}</p>
+      <Stack direction="row" alignItems="center" gap={1}>
+        <CircleIcon sx={{ color: connectionStatusColor[readyState] }} />
+        <Typography variant='h2' style={{ fontSize: 24 }}>Controls</Typography>
+      </Stack>
+      {!import.meta.env.PROD && <Typography>The websocket is currently: {connectionStatus[readyState]}</Typography>}
       <FormControl>
         <FormLabel id="motor-direction">Motor Direction</FormLabel>
         <RadioGroup
@@ -109,7 +107,7 @@ const Controls = () => {
             <IconButton onClick={handleSpeedClick(5)}>
               <Add />
             </IconButton>
-            <p>{speed}</p>
+            <Typography>{speed}</Typography>
           </Stack>
         </Box>
       </FormControl>
