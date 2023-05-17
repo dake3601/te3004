@@ -69,7 +69,7 @@ const Controls = () => {
       <Stack direction="row" alignItems="center" gap={1}>
         <Button variant="contained" onClick={() => handleDirectionChange("Off")}>Off</Button>
         <Button variant="contained" onClick={() => handleDirectionChange("Stop")}>Stop</Button>
-        <Button variant="contained" onClick={() => handleDirectionChange("Backwards")}>Backwards</Button>
+        <Button variant="contained" onClick={() => handleDirectionChange("Backward")}>Backward</Button>
         <Button variant="contained" onClick={() => handleDirectionChange("Forward")}>Forward</Button>
       </Stack>
       <Box sx={{ width: 300 }}>
