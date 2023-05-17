@@ -1,18 +1,7 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import type { Record } from '../types';
 
-const RecordsTable = ({ records }: { records: Record[] }) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-    timeZone: "America/Monterrey"
-  };
-
+const RecordsTable = ({ records, options }: { records: Record[], options: Intl.DateTimeFormatOptions }) => {
   const columns: GridColDef[] = [
     { field: 'timestamp', headerName: 'Timestamp', minWidth: 150, sortable: false },
     { field: 'speed', headerName: 'Speed', minWidth: 50, sortable: false },
