@@ -83,8 +83,8 @@ const Records = () => {
   return (
     <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
       <Stack direction="row" alignItems="center" gap={1}>
-        <CircleIcon sx={{ color: connectionStatusColor[readyState] }} />
         <Typography variant='h2' style={{ fontSize: 24 }}>Records</Typography>
+        <CircleIcon sx={{ color: connectionStatusColor[readyState] }} />
       </Stack>
       {!import.meta.env.PROD && <Typography>The websocket is currently: {connectionStatus[readyState]}</Typography>}
       <RecordsGraph records={records} />

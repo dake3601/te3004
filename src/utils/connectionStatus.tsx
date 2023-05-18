@@ -12,7 +12,7 @@ const connectionStatusColor = {
   [ReadyState.CONNECTING]: 'orange',
   [ReadyState.OPEN]: 'green',
   [ReadyState.CLOSING]: 'orange',
-  [ReadyState.CLOSED]: 'red',
+  [ReadyState.CLOSED]: 'orange',
   [ReadyState.UNINSTANTIATED]: 'red',
 }
 
