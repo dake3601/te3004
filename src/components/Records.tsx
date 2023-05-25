@@ -10,6 +10,17 @@ import type { Record } from '../types';
 import RecordsTable from './RecordsTable';
 import RecordsGraph from './RecordsGraph';
 
+const options: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  hourCycle: 'h23',
+  timeZone: "America/Monterrey"
+};
+
 const Records = () => {
   const [records, setRecords] = useState<Record[]>([])
   const [display, setDisplay] = useState(false)
@@ -21,17 +32,6 @@ const Records = () => {
     reconnectInterval: 100,
   });
 
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hourCycle: 'h23',
-    timeZone: "America/Monterrey"
-  };
-
   useEffect(() => {
     if (lastMessage !== null && lastMessage.data !== null) {
       if (lastMessage.data === 'pong') {
@@ -41,7 +41,10 @@ const Records = () => {
         return;
       } else {
         const record = JSON.parse(lastMessage.data) as Record
-        setRecords(prevRecords => [...prevRecords, record])
+        setRecords(prevRecords => [...prevRecords, {
+          ...record,
+          timestamp: new Date(record.timestamp).toLocaleString("en-US", options),
+        }])
       }
     }
   }, [lastMessage, sendMessage]);
@@ -50,7 +53,12 @@ const Records = () => {
     const fetchData = async () => {
       const data = await fetch(`${API_URL}/api/records`);
       const json = await data.json() as Record[];
-      setRecords(json);
+      setRecords((json).map(record => {
+        return {
+          ...record,
+          timestamp: new Date(record.timestamp).toLocaleString("en-US", options),
+        }
+      }));
     }
 
     fetchData().catch(err => console.log(err));
@@ -69,7 +77,7 @@ const Records = () => {
     if (records.length === 0) return;
     const headers = 'Timestamp,Speed,Current,Voltage,SetSpeed,Direction\n';
     const csv = headers + records.map(record => {
-      return `"${(new Date(record.timestamp).toLocaleString("en-US", options)).replace(",", "")}",${record.speed},${record.current},${record.voltage},${record.setSpeed},${record.direction}`
+      return `"${record.timestamp.replace(",", "")}",${record.speed},${record.current},${record.voltage},${record.setSpeed},${record.direction}`
     }).join('\n');
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csv));
@@ -93,7 +101,7 @@ const Records = () => {
         <Button variant="outlined" color="secondary" onClick={downloadRecords}>Download</Button>
         <Button variant="outlined" color="error" onClick={deleteRecords}>Delete</Button>
       </Stack>
-      {display && <RecordsTable records={records} options={options} />}
+      {display && <RecordsTable records={records} />}
     </Stack>
   )
 }

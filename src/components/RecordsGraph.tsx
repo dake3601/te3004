@@ -41,26 +41,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
     setTab(newValue);
   };
 
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-    timeZone: "America/Monterrey"
-  };
-
-  const data = records.map(record => {
-    return {
-      timestamp: new Date(record.timestamp).toLocaleString("en-US", options),
-      setSpeed: record.setSpeed,
-      speed: record.speed,
-      current: record.current,
-      voltage: record.voltage,
-    }
-  })
+  const data = records.slice(-400);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -76,7 +57,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="timestamp" />
-            <YAxis yAxisId="left-axis" />
+            <YAxis yAxisId="left-axis" domain={[0, 'auto']} tickCount={5} />
             <YAxis yAxisId="right-axis" orientation="right" type="number" domain={[0, 260]} tickCount={5} />
             <Tooltip />
             <Legend />
@@ -90,7 +71,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
           <LineChart data={data} >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="timestamp" />
-            <YAxis />
+            <YAxis type="number" domain={[0, 250]} tickCount={6} allowDataOverflow={true} />
             <Tooltip />
             <Legend />
             <Line name="Voltage (V)" type="monotone" dataKey="voltage" stroke="#ff0000" strokeWidth={3} dot={false} />
@@ -102,7 +83,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
           <LineChart data={data} >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="timestamp" />
-            <YAxis />
+            <YAxis type="number" domain={[0, 30]} tickCount={6} allowDataOverflow={true} />
             <Tooltip />
             <Legend />
             <Line name="Current (A)" type="monotone" dataKey="current" stroke="#ffc658" strokeWidth={3} dot={false} />

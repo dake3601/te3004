@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import type { Record } from '../types';
 
-const RecordsTable = ({ records, options }: { records: Record[], options: Intl.DateTimeFormatOptions }) => {
+const RecordsTable = ({ records }: { records: Record[] }) => {
   const columns: GridColDef[] = [
     { field: 'timestamp', headerName: 'Timestamp', minWidth: 150, sortable: false },
     { field: 'speed', headerName: 'Speed', minWidth: 50, sortable: false },
@@ -11,22 +11,10 @@ const RecordsTable = ({ records, options }: { records: Record[], options: Intl.D
     { field: 'direction', headerName: 'Direction', minWidth: 50, sortable: false },
   ];
 
-  const rows = records.map(record => {
-    return {
-      id: record.id,
-      timestamp: new Date(record.timestamp).toLocaleString("en-US", options),
-      direction: record.direction,
-      setSpeed: record.setSpeed,
-      speed: record.speed,
-      current: record.current,
-      voltage: record.voltage,
-    }
-  })
-
   return (
     <div style={{ height: "100%", width: "90%" }}>
       <DataGrid
-        rows={rows}
+        rows={records}
         columns={columns}
         initialState={{
           pagination: {
