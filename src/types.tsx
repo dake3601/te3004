@@ -7,3 +7,13 @@ export interface Record {
   current: number
   voltage: number
 }
+
+export interface RecordJson {
+  id: string
+  timestamp: string
+  direction: string
+  setSpeed: string
+  speed: string
+  current: string
+  voltage: string
+}

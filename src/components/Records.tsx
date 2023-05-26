@@ -6,20 +6,10 @@ import useWebSocket from 'react-use-websocket';
 import { API_URL, API_WS_URL } from '../utils/config';
 import { connectionStatus, connectionStatusColor } from '../utils/connectionStatus';
 import CircleIcon from '@mui/icons-material/Circle';
-import type { Record } from '../types';
+import type { Record, RecordJson } from '../types';
 import RecordsTable from './RecordsTable';
 import RecordsGraph from './RecordsGraph';
-
-const options: Intl.DateTimeFormatOptions = {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-  hourCycle: 'h23',
-  timeZone: "America/Monterrey"
-};
+import { parseRecord } from '../utils/parseRecord';
 
 const Records = () => {
   const [records, setRecords] = useState<Record[]>([])
@@ -40,11 +30,8 @@ const Records = () => {
         sendMessage('pong');
         return;
       } else {
-        const record = JSON.parse(lastMessage.data) as Record
-        setRecords(prevRecords => [...prevRecords, {
-          ...record,
-          timestamp: new Date(record.timestamp).toLocaleString("en-US", options),
-        }])
+        const record = JSON.parse(lastMessage.data) as RecordJson
+        setRecords(prevRecords => [...prevRecords, parseRecord(record)])
       }
     }
   }, [lastMessage, sendMessage]);
@@ -52,13 +39,8 @@ const Records = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetch(`${API_URL}/api/records`);
-      const json = await data.json() as Record[];
-      setRecords((json).map(record => {
-        return {
-          ...record,
-          timestamp: new Date(record.timestamp).toLocaleString("en-US", options),
-        }
-      }));
+      const json = await data.json() as RecordJson[];
+      setRecords((json).map(parseRecord));
     }
 
     fetchData().catch(err => console.log(err));

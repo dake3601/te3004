@@ -71,7 +71,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
           <LineChart data={data} >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="timestamp" />
-            <YAxis type="number" domain={[0, 250]} tickCount={6} allowDataOverflow={true} />
+            <YAxis type="number" domain={[0, 'auto']} tickCount={5} allowDataOverflow={true} />
             <Tooltip />
             <Legend />
             <Line name="Voltage (V)" type="monotone" dataKey="voltage" stroke="#ff0000" strokeWidth={3} dot={false} />
@@ -83,7 +83,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
           <LineChart data={data} >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="timestamp" />
-            <YAxis type="number" domain={[0, 30]} tickCount={6} allowDataOverflow={true} />
+            <YAxis type="number" domain={[0, 'auto']} tickCount={5} allowDataOverflow={true} />
             <Tooltip />
             <Legend />
             <Line name="Current (A)" type="monotone" dataKey="current" stroke="#ffc658" strokeWidth={3} dot={false} />
