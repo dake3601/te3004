@@ -38,7 +38,7 @@ const Records = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch(`${API_URL}/api/records`);
+      const data = await fetch(`${API_URL}/api/records?limit=1800`);
       const json = await data.json() as RecordJson[];
       setRecords((json).map(parseRecord));
     }
