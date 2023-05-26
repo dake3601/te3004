@@ -44,7 +44,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
   const data = records.slice(-400);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box width='80vw' >
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Speed" {...a11yProps(0)} />
