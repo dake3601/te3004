@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Remove from '@mui/icons-material/Remove';
@@ -17,8 +17,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Tooltip from '@mui/material/Tooltip';
 
 const Controls = () => {
-  const [speed, setSpeed] = useState(0)
-  const [direction, setDirection] = useState('Stop')
+  const [speed, setSpeed] = useState(0);
+  const [direction, setDirection] = useState('Stop');
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/commands`, {
     shouldReconnect: () => true,
@@ -39,29 +39,29 @@ const Controls = () => {
   }, [lastMessage, sendMessage]);
 
   const handleDirectionChange = (newDirection: string) => {
-    setDirection(newDirection)
-    sendMessage(JSON.stringify({ speed, direction: newDirection }))
-  }
+    setDirection(newDirection);
+    sendMessage(JSON.stringify({ speed, direction: newDirection }));
+  };
 
   const handleSpeedChange = (_event: React.SyntheticEvent | Event, value: number | number[]) => {
     if (typeof value !== 'number') return;
-    setSpeed(value)
-  }
+    setSpeed(value);
+  };
 
   const handleCommitedSpeedChange = (_event: React.SyntheticEvent | Event, value: number | number[]) => {
     if (typeof value !== 'number') return;
-    setSpeed(value)
-    sendMessage(JSON.stringify({ speed: value, direction }))
-  }
+    setSpeed(value);
+    sendMessage(JSON.stringify({ speed: value, direction }));
+  };
 
   const handleSpeedClick = (change: number) => {
     return () => {
       const newSpeed = Math.min(Math.max(speed + change, 0), 255);
       if (newSpeed === speed) return;
-      setSpeed(newSpeed)
-      sendMessage(JSON.stringify({ speed: newSpeed, direction }))
-    }
-  }
+      setSpeed(newSpeed);
+      sendMessage(JSON.stringify({ speed: newSpeed, direction }));
+    };
+  };
 
   return (
     <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
@@ -119,7 +119,7 @@ const Controls = () => {
         </Stack>
       </Box>
     </Stack>
-  )
-}
+  );
+};
 
-export default Controls
+export default Controls;

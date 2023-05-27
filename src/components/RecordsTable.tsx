@@ -38,7 +38,7 @@ const RecordsTable = ({ records }: { records: Record[] }) => {
         hideFooterSelectedRowCount
       />
     </Box >
-  )
-}
+  );
+};
 
-export default RecordsTable
+export default RecordsTable;

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -33,11 +33,11 @@ const TabPanel = (props: {
       )}
     </div>
   );
-}
+};
 
 const RecordsGraph = ({ records }: { records: Record[] }) => {
   const { width } = useWindowDimensions();
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(0);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
@@ -94,7 +94,7 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
       </TabPanel>
     </Box >
 
-  )
-}
+  );
+};
 
-export default RecordsGraph
+export default RecordsGraph;

@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { API_URL, API_WS_URL } from '../utils/config';
 import { connectionStatus, connectionStatusColor } from '../utils/connectionStatus';
@@ -13,8 +13,8 @@ import { parseRecord } from '../utils/parseRecord';
 import useWindowDimensions from '../utils/useWindowDimensions';
 
 const Records = () => {
-  const [records, setRecords] = useState<Record[]>([])
-  const [display, setDisplay] = useState(false)
+  const [records, setRecords] = useState<Record[]>([]);
+  const [display, setDisplay] = useState(false);
   const { width } = useWindowDimensions();
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/updates`, {
@@ -32,8 +32,8 @@ const Records = () => {
         sendMessage('pong');
         return;
       } else {
-        const record = JSON.parse(lastMessage.data) as RecordJson
-        setRecords(prevRecords => [...prevRecords, parseRecord(record)])
+        const record = JSON.parse(lastMessage.data) as RecordJson;
+        setRecords(prevRecords => [...prevRecords, parseRecord(record)]);
       }
     }
   }, [lastMessage, sendMessage]);
@@ -43,7 +43,7 @@ const Records = () => {
       const data = await fetch(`${API_URL}/api/records?limit=1800`);
       const json = await data.json() as RecordJson[];
       setRecords((json).map(parseRecord));
-    }
+    };
 
     fetchData().catch(err => console.log(err));
   }, []);
@@ -55,13 +55,13 @@ const Records = () => {
     });
     if (data.status !== 204) return;
     setRecords([]);
-  }
+  };
 
   const downloadRecords = async () => {
     if (records.length === 0) return;
     const headers = 'Timestamp,Speed,Current,Voltage,SetSpeed,Direction\n';
     const csv = headers + records.map(record => {
-      return `"${record.timestamp.replace(",", "")}",${record.speed},${record.current},${record.voltage},${record.setSpeed},${record.direction}`
+      return `"${record.timestamp.replace(",", "")}",${record.speed},${record.current},${record.voltage},${record.setSpeed},${record.direction}`;
     }).join('\n');
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csv));
@@ -70,7 +70,7 @@ const Records = () => {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
-  }
+  };
 
   return (
     <Stack spacing={2} direction="column" sx={{ mb: 1 }} alignItems="center">
@@ -87,7 +87,7 @@ const Records = () => {
       </Stack>
       {display && <RecordsTable records={records} />}
     </Stack>
-  )
-}
+  );
+};
 
-export default Records
+export default Records;

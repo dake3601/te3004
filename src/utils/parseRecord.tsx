@@ -18,6 +18,6 @@ const parseRecord = (record: RecordJson): Record => ({
   current: parseFloat(record.current),
   speed: parseFloat(record.speed),
   timestamp: new Date(record.timestamp).toLocaleString("en-US", options),
-})
+});
 
-export { parseRecord }
+export { parseRecord };

@@ -1,6 +1,6 @@
-import './App.css'
-import Controls from './components/Controls'
-import Records from './components/Records'
+import './App.css';
+import Controls from './components/Controls';
+import Records from './components/Records';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -21,7 +21,7 @@ const App = () => {
       <Controls />
       <Records />
     </Box>
-  )
-}
+  );
+};
 
-export default App
+export default App;

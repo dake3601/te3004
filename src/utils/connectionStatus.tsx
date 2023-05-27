@@ -6,7 +6,7 @@ const connectionStatus = {
   [ReadyState.CLOSING]: 'Closing',
   [ReadyState.CLOSED]: 'Closed',
   [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-}
+};
 
 const connectionStatusColor = {
   [ReadyState.CONNECTING]: 'orange',
@@ -14,6 +14,6 @@ const connectionStatusColor = {
   [ReadyState.CLOSING]: 'orange',
   [ReadyState.CLOSED]: 'orange',
   [ReadyState.UNINSTANTIATED]: 'red',
-}
+};
 
-export { connectionStatus, connectionStatusColor }
+export { connectionStatus, connectionStatusColor };
