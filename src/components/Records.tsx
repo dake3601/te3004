@@ -10,10 +10,12 @@ import type { Record, RecordJson } from '../types';
 import RecordsTable from './RecordsTable';
 import RecordsGraph from './RecordsGraph';
 import { parseRecord } from '../utils/parseRecord';
+import useWindowDimensions from '../utils/useWindowDimensions';
 
 const Records = () => {
   const [records, setRecords] = useState<Record[]>([])
   const [display, setDisplay] = useState(false)
+  const { width } = useWindowDimensions();
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(`${API_WS_URL}/api/updates`, {
     shouldReconnect: () => true,
@@ -78,7 +80,7 @@ const Records = () => {
       </Stack>
       {!import.meta.env.PROD && <Typography>The websocket is currently: {connectionStatus[readyState]}</Typography>}
       <RecordsGraph records={records} />
-      <Stack spacing={5} direction="row" sx={{ mb: 1 }} alignItems="center">
+      <Stack spacing={width < 600 ? 2 : 5} direction="row" sx={{ mb: 1 }} alignItems="center">
         <Button variant="outlined" onClick={() => setDisplay(!display)}>{display ? 'Hide' : 'Show'} records</Button>
         <Button variant="outlined" color="secondary" onClick={downloadRecords}>Download</Button>
         <Button variant="outlined" color="error" onClick={deleteRecords}>Delete</Button>

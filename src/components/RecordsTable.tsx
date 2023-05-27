@@ -1,8 +1,11 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import type { Record } from '../types';
 import Box from '@mui/material/Box';
+import useWindowDimensions from '../utils/useWindowDimensions';
 
 const RecordsTable = ({ records }: { records: Record[] }) => {
+  const { width } = useWindowDimensions();
+
   const columns: GridColDef[] = [
     { field: 'timestamp', headerName: 'Timestamp', flex: 125, sortable: false, },
     { field: 'speed', headerName: 'Speed', flex: 75, sortable: false },
@@ -17,7 +20,7 @@ const RecordsTable = ({ records }: { records: Record[] }) => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minWidth='60vw'
+      width={width < 800 ? '75vw' : width / 2 < 600 ? 600 : '50vw'}
     >
       <DataGrid
         rows={records}
