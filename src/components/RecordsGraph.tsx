@@ -59,12 +59,12 @@ const RecordsGraph = ({ records }: { records: Record[] }) => {
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="timestamp" />
-            <YAxis yAxisId="left-axis" domain={[0, 'auto']} tickCount={5} />
-            <YAxis yAxisId="right-axis" orientation="right" type="number" domain={[0, 260]} tickCount={5} />
+            <YAxis yAxisId="left-axis" type="number" domain={[0, 3500]} tickCount={6} />
+            <YAxis yAxisId="right-axis" orientation="right" type="number" domain={[0, 3500]} tickCount={6} axisLine={false} tick={false} />
             <Tooltip />
             <Legend />
             <Line name="Speed (rpm)" type="monotone" dataKey="speed" stroke="#82ca9d" yAxisId="left-axis" strokeWidth={3} dot={false} />
-            <Line name="Set Speed (0-255)" type="monotone" dataKey="setSpeed" stroke="#8884d8" yAxisId="right-axis" strokeWidth={3} dot={false} />
+            <Line name="Set Speed (rpm)" type="monotone" dataKey="setSpeed" stroke="#8884d8" yAxisId="right-axis" strokeWidth={2} dot={false} strokeDasharray="4"/>
           </LineChart>
         </ResponsiveContainer>
       </TabPanel>

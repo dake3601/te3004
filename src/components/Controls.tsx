@@ -15,6 +15,7 @@ import StopIcon from '@mui/icons-material/Stop';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Tooltip from '@mui/material/Tooltip';
+import { bitToRpm } from '../utils/parseRecord';
 
 const Controls = () => {
   const [speed, setSpeed] = useState(0);
@@ -106,6 +107,7 @@ const Controls = () => {
             step={5}
             min={0}
             max={255}
+            scale={(x) => bitToRpm(x)}
             value={speed}
             onChange={handleSpeedChange}
             onChangeCommitted={handleCommitedSpeedChange}
@@ -115,7 +117,7 @@ const Controls = () => {
               <Add color="action" />
             </IconButton>
           </Tooltip>
-          <Typography>{speed}</Typography>
+          <Typography>{bitToRpm(speed)}</Typography>
         </Stack>
       </Box>
     </Stack>
